@@ -1,13 +1,32 @@
 <template>
   <div id="app">
     <Wallpaper :date="date" :src="wallpaperSrc"></Wallpaper>
-    <PointerClock v-if="pointerClock.show" @component-onmousedown="onMousedown" :date="date" :style="pointerClock"></PointerClock>
+    <PointerClock
+      v-if="pointerClock.show"
+      @component-onmousedown="onMousedown"
+      :date="date"
+      :style="pointerClock"
+    ></PointerClock>
+    <Calendar
+      v-if="calendar.show"
+      @component-onmousedown="onMousedown"
+      :date="date"
+      :style="calendar"
+    ></Calendar>
+    <digital-clock
+      v-if="digitalClock.show"
+      @component-onmousedown="onMousedown"
+      :date="date"
+      :style="digitalClock"
+    ></digital-clock>
   </div>
 </template>
 
 <script>
 import Wallpaper from "./components/Wallpaper";
 import PointerClock from "./components/PointerClock";
+import Calendar from "./components/Calendar";
+import DigitalClock from "./components/DigitalClock";
 
 export default {
   name: "App",
@@ -20,7 +39,19 @@ export default {
         top: "20px",
         zIndex: 1,
         show: true,
-      }
+      },
+      calendar: {
+        left: "440px",
+        top: "20px",
+        zIndex: 2,
+        show: true,
+      },
+      digitalClock: {
+        left: "440px",
+        top: "260px",
+        zIndex: 3,
+        show: true,
+      },
     };
   },
   methods: {
@@ -40,9 +71,8 @@ export default {
      * @param {String} styleName 样式key
      */
     onMousedown: function (e, element, styleName) {
-      var componentNames = ["pointerClock"];
+      var componentNames = ["pointerClock", "calendar", "digitalClock"];
       var length = componentNames.length;
-      console.log(this[styleName].zIndex);
       if (this[styleName].zIndex != length) {
         componentNames.splice(componentNames.indexOf(styleName), 1);
         for (var i = 0; i < componentNames.length; i++) {
@@ -83,14 +113,16 @@ export default {
   mounted: function () {
     this.timer();
   },
-  watch:{
-    pointerclockShow:function(newValue){
+  watch: {
+    pointerclockShow: function (newValue) {
       alert(newValue);
-    }
+    },
   },
   components: {
     Wallpaper,
     PointerClock,
+    Calendar,
+    DigitalClock,
   },
 };
 </script>
